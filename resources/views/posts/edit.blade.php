@@ -4,7 +4,7 @@
     
 @section('content')
   <!-- connect to the model (model, [where to go after successful submit]) -->
-  {!! Form::model($post, ['route' => ['posts.update', $post->id]]) !!}
+  {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT']) !!}
   <div class="row">
     <div class="col-md-8">
       <div class="form-group mt-3">
@@ -35,7 +35,7 @@
                   {!! Html::linkRoute('posts.show', 'Cancel', array($post->id), array('class' => 'btn btn-danger btn-block')) !!}
                 </div>
                 <div class="col-sm-6">
-                  {!! Html::linkRoute('posts.update', 'Save Changes', array($post->id), array('class' => 'btn btn-success btn-block')) !!}
+                  {{ Form::submit('Save Changes', ['class' => 'btn btn-success btn-block']) }}
                 </div>
               </div>
           </div>
@@ -43,4 +43,4 @@
       </div>
     </div> <!-- end of row (form) -->  
     {!! Form::close() !!}   
-@endsection
+@stop
