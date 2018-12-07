@@ -25,7 +25,7 @@
           @foreach ($posts as $post)
             <tr>
               <td>{{ $post->id }}</td>
-              <td>{{ $post->title }}</td>
+              <td>{{ substr($post->title, 0, 30) }}{{ strlen($post->title) > 30 ? '...': '' }}</td>
               <td>
                 {{ substr($post->body, 0, 50) }}{{ strlen($post->body) > 50 ? '...': '' }}
               </td>
@@ -38,6 +38,10 @@
           @endforeach
         </tbody>
       </table>
+      <!-- pagination -->
+      <div class="pagination justify-content-center">
+        {!! $posts->links() !!}
+      </div>
     </div>
   </div>
 @stop     
