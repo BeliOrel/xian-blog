@@ -11,13 +11,21 @@
     <div class="col-md-4">
       <div class="card mt-3">
           <div class="card-body">
-              <dl class="row">
-                  <dt class="col-sm-5">Created At:</dt>
-                  <dd class="col-sm-7">{{ date('M j, Y G:i', strtotime($post->created_at)) }}</dd>
-                
-                  <dt class="col-sm-5">Last Updated:</dt>
-                  <dd class="col-sm-7">{{ date('M j, Y G:i', strtotime($post->updated_at)) }}</dd>
-              </dl>
+              <div class="mt-1">
+                <label><strong>Url:</strong></label>
+                <!-- two ways of doing URLs -> route() or url() -->
+                <p class="text-muted mt-0"><a href="{{ route('blog.single', $post->slug) }}">{{ url('blog/' .$post->slug) }}</a></p>
+              </div>
+              
+              <div class="mt-1">
+                <label><strong>Created At:</strong></label>
+                <p class="text-muted mt-0">{{ date('M j, Y G:i', strtotime($post->created_at)) }}</p>
+              </div>
+              
+              <div class="mt-1">
+                <label><strong>Last Updated:</strong></label>
+                <p class="text-muted mt-0">{{ date('M j, Y G:i', strtotime($post->updated_at)) }}</p>
+              </div>
               <hr>
               <div class="row">
                 <div class="col-sm-6">

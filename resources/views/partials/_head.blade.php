@@ -10,4 +10,4 @@
 
 @yield('stylesheets')
 
-<title>Xian Laravel Blog | @yield('title')</title> <!-- change this title for each page -->
+<title>Xian Laravel Blog @yield('title')</title> <!-- change this title for each page -->

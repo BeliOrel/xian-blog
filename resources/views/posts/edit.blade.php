@@ -11,6 +11,10 @@
         {{ Form::label('title', 'Title:', ["class" => "font-weight-bold"]) }}
         {{ Form::text('title', null, ["class" => ["form-control", "input-lg"]]) }}
       </div>
+      <div class="form-group mt-3">
+        {{ Form::label('slug', 'Slug:', ["class" => "font-weight-bold"]) }}
+        {{ Form::text('slug', null, ["class" => ["form-control"]]) }}
+      </div>
       <div class="form-group">
         {{ Form::label('body', 'Your Thoughts:', ["class" => "font-weight-bold"]) }}
         {{ Form::textarea('body', null, ["class" => ["form-control", "lead"]]) }}

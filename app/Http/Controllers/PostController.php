@@ -49,12 +49,14 @@ class PostController extends Controller
         // validate the data
         $this->validate($request, array(
             'title' => 'required|max:191',
+            'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
             'body' => 'required'
         ));
 
         // store in the database
         $post = new Post;
         $post->title = $request->title;
+        $post->slug = $request->slug;
         $post->body = $request->body;
 
         $post->save();
@@ -107,15 +109,28 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // find post so we can check the post's slug latter
+        $post = Post::find($id); 
+
         // validate the data
-        $this->validate($request, array(
-            'title' => 'required|max:191',
-            'body' => 'required'
-        ));
+        if ($request->input('slug') == $post->slug) {
+            $this->validate($request, array(
+                'title' => 'required|max:191',
+                'body' => 'required'
+            ));
+        } 
+        else {
+            $this->validate($request, array(
+                'title' => 'required|max:191',
+                'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
+                'body' => 'required'
+            ));
+        }
 
         // save the data to DB
         $post = Post::find($id);
         $post->title = $request->input('title');
+        $post->slug = $request->input('slug');
         $post->body = $request->input('body');
         $post->save();
 

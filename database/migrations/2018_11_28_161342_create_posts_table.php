@@ -13,6 +13,7 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
+        // if you want to populate database with dummy data, you can use seeding
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
