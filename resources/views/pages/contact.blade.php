@@ -1,6 +1,6 @@
-@extends('main')
+@extends('layouts.app')
 
-@section('title', 'Contact')
+@section('title', '| Contact')
 
 @section('content')
   <div class="row d-flex align-items-center">

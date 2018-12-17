@@ -16,3 +16,9 @@ Route::get('/about', 'PagesController@getAbout');
 Route::get('/contact', 'PagesController@getContact');
 Route::get('/', 'PagesController@getIndex');
 Route::resource('posts', 'PostController');
+
+Auth::routes();
+// if you want to logout with just typing logout in url
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
+
+Route::get('/home', 'HomeController@index')->name('home');
