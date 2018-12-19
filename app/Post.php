@@ -10,4 +10,9 @@ class Post extends Model
         // we connect this model with Category model
         return $this->belongsTo('App\Category');
     }
+
+    // connecting with the Tag model [n:m relation]
+    public function tags() {
+        return $this->belongsToMany('App\Tag');
+    }
 }
