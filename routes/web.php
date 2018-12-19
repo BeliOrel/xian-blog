@@ -21,6 +21,8 @@ Route::resource('posts', 'PostController');
 // we deleted create function, so we don't need that route
 Route::resource('categories', 'CategoryController', ['except' => ['create']]);
 
+Route::resource('tags', 'TagController', ['except' => ['create']]);
+
 Auth::routes();
 // if you want to logout with just typing logout in url
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
