@@ -3,7 +3,10 @@
 @section('title', '| Create New Post')
 
 @section('stylesheets')
-  {!! Html::style('css/parsley.css') !!}    
+  {!! Html::style('css/parsley.css') !!}
+
+  <!-- Select2 CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" /> 
 @endsection
 
 @section('content')
@@ -25,6 +28,13 @@
           @endforeach
         </select>
 
+        {{ Form::label('tags', 'Tags:', ['class' => 'mt-3']) }}
+        <select name="tags[]" class="form-control select2-multiple" multiple="multiple">
+          @foreach ($tags as $tag)
+            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+          @endforeach
+        </select>
+
         {{ Form::label('body', 'Post Body:', array('class' => 'mt-3')) }}
         {{ Form::textarea('body', null, array('class' => 'form-control', 'required' => '')) }}
 
@@ -36,4 +46,8 @@
 
 @section('scripts')
   {!! Html::script('js/parsley.min.js') !!}
+
+  <!-- Select2 JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+  {!! Html::script('js/select2-m.js') !!}
 @endsection

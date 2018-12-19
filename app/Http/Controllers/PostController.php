@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use Illuminate\Support\Facades\Session;
 use App\Category;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -42,7 +43,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('posts.create')->withCategories($categories);
+        $tags = Tag::all();
+        return view('posts.create')->withCategories($categories)->withTags($tags);
     }
 
     /**
@@ -53,7 +55,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // validate the data
+        // dd($request); // for development -> stops app at this point
+         // validate the data
         $this->validate($request, array(
             'title' => 'required|max:191',
             'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
@@ -69,6 +72,10 @@ class PostController extends Controller
         $post->body = $request->body;
 
         $post->save();
+
+        // we do tag binding after we store data to DB but before Session
+        // false -> do not overwrite tags
+        $post->tags()->sync($request->tags, false);
 
         // creating a message
         // flash -> only exists for one page request <- temporary
@@ -104,6 +111,7 @@ class PostController extends Controller
         // find the post in the DB and save as a variable
         $post = Post::find($id);
         $categories = Category::all(); // <- objects
+        $tags = Tag::all();
 
         // we do this beacuse we're gonna fill in {{ Form::select() }} in view
         // which needs prepared data for every single category
@@ -113,9 +121,14 @@ class PostController extends Controller
             $cats[$category->id] = $category->name;
         }
 
+        $tgs = [];
+        foreach($tags as $tag) {
+            $tgs[$tag->id] = $tag->name;
+        }
+
         // return the view and pass in the variable
         // we previously created
-        return view('posts.edit')->withPost($post)->withCategories($cats);
+        return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tgs);
     }
 
     /**
@@ -157,6 +170,10 @@ class PostController extends Controller
         $post->body = $request->input('body');
         $post->save();
 
+        // we do binding with tags after we store data to DB but before Session
+        // true -> overwrite old tags
+        $post->tags()->sync($request->tags, true);
+
         // set flash data with success message
         Session::flash('success', 'This post was successfully saved!');
 
@@ -173,6 +190,9 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
+
+        // detach related tags
+        $post->tags()->detach();
         $post->delete();
 
         Session::flash('success', 'The post was successfully deleted!');
