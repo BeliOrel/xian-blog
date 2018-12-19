@@ -15,6 +15,10 @@
         {{ Form::label('slug', 'Slug:', ["class" => "font-weight-bold"]) }}
         {{ Form::text('slug', null, ["class" => ["form-control"]]) }}
       </div>
+      <div class="form-group mt-3">
+        {{ Form::label('category_id', 'Category:', ["class" => "font-weight-bold"]) }}
+        {{ Form::select('category_id', $categories, null, ['class' => 'form-control']) }}
+      </div>
       <div class="form-group">
         {{ Form::label('body', 'Your Thoughts:', ["class" => "font-weight-bold"]) }}
         {{ Form::textarea('body', null, ["class" => ["form-control", "lead"]]) }}

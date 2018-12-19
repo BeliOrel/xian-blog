@@ -15,7 +15,11 @@ Route::get('/blog', ['uses' => 'BlogController@getIndex', 'as' => 'blog.index'])
 Route::get('/about', 'PagesController@getAbout');
 Route::get('/contact', 'PagesController@getContact');
 Route::get('/', 'PagesController@getIndex');
+
 Route::resource('posts', 'PostController');
+
+// we deleted create function, so we don't need that route
+Route::resource('categories', 'CategoryController', ['except' => ['create']]);
 
 Auth::routes();
 // if you want to logout with just typing logout in url

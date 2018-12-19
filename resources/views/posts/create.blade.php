@@ -15,13 +15,20 @@
         {{ Form::label('title', 'Title:') }}
         {{ Form::text('title', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '191')) }}
 
-        {{ Form::label('slug', 'Slug:') }}
+        {{ Form::label('slug', 'Slug:', ['class' => 'mt-3']) }}
         {{ Form::text('slug', null, array('class' => 'form-control', 'required' => '', 'minlength' => '5', 'maxlength' => '191')) }}
+
+        {{ Form::label('category_id', 'Category:', ['class' => 'mt-3']) }}
+        <select name="category_id" class="form-control">
+          @foreach ($categories as $category)
+            <option value="{{ $category->id }}">{{ $category->name }}</option>
+          @endforeach
+        </select>
 
         {{ Form::label('body', 'Post Body:', array('class' => 'mt-3')) }}
         {{ Form::textarea('body', null, array('class' => 'form-control', 'required' => '')) }}
 
-        {{ Form::submit('Create Post', array('class' => 'btn btn-success btn-lg btn-block mt-4')) }}
+        {{ Form::submit('Create Post', array('class' => 'btn btn-success btn-lg btn-block btn-h1-spacing')) }}
       {!! Form::close() !!}
     </div>
   </div>

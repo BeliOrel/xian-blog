@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use Illuminate\Support\Facades\Session;
-// use Session;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -41,7 +41,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::all();
+        return view('posts.create')->withCategories($categories);
     }
 
     /**
@@ -56,6 +57,7 @@ class PostController extends Controller
         $this->validate($request, array(
             'title' => 'required|max:191',
             'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
+            'category_id' => 'required|integer',
             'body' => 'required'
         ));
 
@@ -63,6 +65,7 @@ class PostController extends Controller
         $post = new Post;
         $post->title = $request->title;
         $post->slug = $request->slug;
+        $post->category_id = $request->category_id;
         $post->body = $request->body;
 
         $post->save();
@@ -100,10 +103,19 @@ class PostController extends Controller
     {
         // find the post in the DB and save as a variable
         $post = Post::find($id);
+        $categories = Category::all(); // <- objects
+
+        // we do this beacuse we're gonna fill in {{ Form::select() }} in view
+        // which needs prepared data for every single category
+        // in pairs 'key' => 'value' <- array
+        $cats = [];
+        foreach($categories as $category) {
+            $cats[$category->id] = $category->name;
+        }
 
         // return the view and pass in the variable
         // we previously created
-        return view('posts.edit')->withPost($post);
+        return view('posts.edit')->withPost($post)->withCategories($cats);
     }
 
     /**
@@ -119,9 +131,12 @@ class PostController extends Controller
         $post = Post::find($id); 
 
         // validate the data
+        // check if slug changed, so there is no error,
+        // because slug is unique
         if ($request->input('slug') == $post->slug) {
             $this->validate($request, array(
                 'title' => 'required|max:191',
+                'category_id' => 'required|integer',
                 'body' => 'required'
             ));
         } 
@@ -129,6 +144,7 @@ class PostController extends Controller
             $this->validate($request, array(
                 'title' => 'required|max:191',
                 'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
+                'category_id' => 'required|integer',
                 'body' => 'required'
             ));
         }
@@ -137,6 +153,7 @@ class PostController extends Controller
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
+        $post->category_id = $request->input('category_id');
         $post->body = $request->input('body');
         $post->save();
 

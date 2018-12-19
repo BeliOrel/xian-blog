@@ -16,6 +16,12 @@
                 <!-- two ways of doing URLs -> route() or url() -->
                 <p class="text-muted mt-0"><a href="{{ route('blog.single', $post->slug) }}">{{ url('blog/' .$post->slug) }}</a></p>
               </div>
+
+              <div class="mt-1">
+                  <label><strong>Category:</strong></label>
+                  <!-- two ways of doing URLs -> route() or url() -->
+                  <p class="text-muted mt-0">{{ $post->category->name }}</p>
+                </div>
               
               <div class="mt-1">
                 <label><strong>Created At:</strong></label>
