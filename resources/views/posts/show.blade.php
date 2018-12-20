@@ -3,6 +3,7 @@
 @section('title', '| View Post')
 
 @section('content')
+  <!-- left column -->
   <div class="row">
     <div class="col-md-8">
         <h1 class="mt-3">{{ $post->title }}</h1>
@@ -13,7 +14,37 @@
             <span class="badge badge-pill badge-secondary">{{ $tag->name }}</span>
           @endforeach
         </div>
+        <div id="backend-comments">
+          <h3>Comments <small class="font-weight-light">{{ $post->comments()->count() }} total</small></h3>
+
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Comment</th>
+                <th width="90px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($post->comments as $comment)
+                <tr>
+                  <td>{{ $comment->name }}</td>
+                  <td>{{ $comment->email }}</td>
+                  <td>{{ $comment->comment }}</td>
+                  <td>
+                    <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                    <a href="{{ route('comments.delete', $comment->id) }}" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a>
+                  </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+
+        </div>
     </div>
+
+    <!-- right column -->
     <div class="col-md-4">
       <div class="card mt-3">
           <div class="card-body">
