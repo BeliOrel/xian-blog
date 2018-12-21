@@ -7,6 +7,7 @@ use App\Post;
 use Illuminate\Support\Facades\Session;
 use App\Category;
 use App\Tag;
+use Purifier;
 
 class PostController extends Controller
 {
@@ -69,7 +70,8 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->category_id = $request->category_id;
-        $post->body = $request->body;
+        // Purifier::clean() for securing data
+        $post->body = Purifier::clean($request->body);
 
         $post->save();
 
@@ -167,7 +169,7 @@ class PostController extends Controller
         $post->title = $request->input('title');
         $post->slug = $request->input('slug');
         $post->category_id = $request->input('category_id');
-        $post->body = $request->input('body');
+        $post->body = Purifier::clean($request->body);
         $post->save();
 
         // we do binding with tags after we store data to DB but before Session

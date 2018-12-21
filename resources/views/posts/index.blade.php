@@ -27,7 +27,7 @@
               <td>{{ $post->id }}</td>
               <td>{{ substr($post->title, 0, 30) }}{{ strlen($post->title) > 30 ? '...': '' }}</td>
               <td>
-                {{ substr($post->body, 0, 50) }}{{ strlen($post->body) > 50 ? '...': '' }}
+                {{ substr(strip_tags($post->body), 0, 50) }}{{ strlen(strip_tags($post->body)) > 50 ? '...': '' }}
               </td>
               <td>{{ date('M j, Y G:i', strtotime($post->created_at)) }}</td>
               <td>

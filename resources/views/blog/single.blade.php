@@ -10,7 +10,9 @@
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <h1 class="mt-3">{{ $post->title }}</h1>
-        <p>{{ $post->body }}</p>
+
+        <!-- do this only if you know it's 100% safe content for DB -->
+        <p>{!! $post->body !!}</p>
         <hr>
         <p>Posted In: <strong>{{ $post->category->name }}</strong></p> 
       </div>

@@ -18,10 +18,11 @@
             @foreach ($posts as $post)
                 <div class="post my-2">
                     <h3>{{ $post->title }}</h3>
-                    <p>{{ substr($post->body, 0, 350) }}{{ strlen($post->body) > 350 ? '...': '' }}</p>
+                    <!-- use strip_tags() if you want to get rid of HTML code
+                        that's generated with WYSIWYG editor -->
+                    <p>{{ substr(strip_tags($post->body), 0, 350) }}{{ strlen(strip_tags($post->body)) > 350 ? '...': '' }}</p>
                     <a href="{{ url('blog/' .$post->slug) }}" class="btn btn-primary">Read More</a>                  
-                </div>
-    
+                </div>    
                 <hr>
             @endforeach
         </div>

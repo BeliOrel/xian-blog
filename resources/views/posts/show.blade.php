@@ -7,7 +7,10 @@
   <div class="row">
     <div class="col-md-8">
         <h1 class="mt-3">{{ $post->title }}</h1>
-        <p class="lead">{{ $post->body }}</p>
+
+        <!-- do this only if you know it's 100% safe content for DB -->
+        <p class="lead">{!! $post->body !!}</p>
+        
         <hr>
         <div class="tags">
           @foreach ($post->tags as $tag)

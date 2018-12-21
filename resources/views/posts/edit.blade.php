@@ -4,7 +4,7 @@
 
 @section('stylesheets')
   <!-- Select2 CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" /> 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 @endsection
     
 @section('content')
@@ -30,7 +30,7 @@
       </div>
       <div class="form-group">
         {{ Form::label('body', 'Your Thoughts:', ["class" => "font-weight-bold"]) }}
-        {{ Form::textarea('body', null, ["class" => ["form-control", "lead"]]) }}
+        {{ Form::textarea('body', null, ['id' => 'summernote', "class" => "form-control lead"]) }}
       </div>
     </div>
     <div class="col-md-4">
@@ -66,4 +66,16 @@
   <!-- Select2 JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
   {!! Html::script('js/select2-m.js') !!}
+
+      <!-- summernote -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.css" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.11/summernote-bs4.js"></script>
+  
+    <script>
+      $('#summernote').summernote({
+        placeholder: 'Write something',
+        tabsize: 2,
+        height: 400
+      });
+    </script>
 @endsection
