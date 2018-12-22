@@ -144,12 +144,10 @@ class PostController extends Controller
         foreach($categories as $category) {
             $cats[$category->id] = $category->name;
         }
-
         $tgs = [];
         foreach($tags as $tag) {
             $tgs[$tag->id] = $tag->name;
         }
-
         // return the view and pass in the variable
         // we previously created
         return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tgs);
@@ -237,7 +235,7 @@ class PostController extends Controller
 
         $post->delete();
 
-        Session::flash('success', 'The post was successfully deleted!');
+        Session::flash('success', 'Post was successfully deleted!');
         return redirect()->route('posts.index');
     }
 }
