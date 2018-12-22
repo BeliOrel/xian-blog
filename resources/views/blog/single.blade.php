@@ -9,6 +9,9 @@
 @section('content')
     <div class="row">
       <div class="col-md-8 offset-md-2">
+        @if (!empty($post->image))
+          <img src="{{ asset('images/' . $post->image) }}" class="mt-3 post_image">
+        @endif
         <h1 class="mt-3">{{ $post->title }}</h1>
 
         <!-- do this only if you know it's 100% safe content for DB -->

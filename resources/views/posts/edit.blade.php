@@ -9,7 +9,7 @@
     
 @section('content')
   <!-- connect to the model (model, [where to go after successful submit]) -->
-  {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT']) !!}
+  {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT', 'files' => true]) !!}
   <div class="row">
     <div class="col-md-8">
       <div class="form-group mt-3">
@@ -27,6 +27,10 @@
       <div class="form-group mt-3">
         {{ Form::label('tags', 'Tags:', ["class" => "font-weight-bold"]) }}
         {{ Form::select('tags[]', $tags, null, ['class' => 'form-control select2-multiple', 'multiple' => 'multiple']) }}
+      </div>
+      <div class="form-group mt-3">
+        {{ Form::label('featured_image', 'Update Featured Image:', array('class' => 'mt-3 font-weight-bold')) }}
+        {{ Form::file('featured_image') }}
       </div>
       <div class="form-group">
         {{ Form::label('body', 'Your Thoughts:', ["class" => "font-weight-bold"]) }}

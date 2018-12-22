@@ -14,31 +14,51 @@
     <div class="col-md-8 offset-md-2">
       <h1 class="mt-4">Create New Post</h1>
       <hr>
-      {!! Form::open(['route' => 'posts.store', 'data-parsley-validate' => '']) !!}
-        {{ Form::label('title', 'Title:', ['class' => 'mt-3 font-weight-bold']) }}
-        {{ Form::text('title', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '191')) }}
 
-        {{ Form::label('slug', 'Slug:', ['class' => 'mt-3 font-weight-bold']) }}
-        {{ Form::text('slug', null, array('class' => 'form-control', 'required' => '', 'minlength' => '5', 'maxlength' => '191')) }}
+      <!-- form without Laravel helpers for picture upload -->
+      <!--
+      <form action="/" method='post' enctype='multipart/form-data'>
+      </form> 
+      -->
 
-        {{ Form::label('category_id', 'Category:', ['class' => 'mt-3 font-weight-bold']) }}
-        <select name="category_id" class="form-control">
-          @foreach ($categories as $category)
-            <option value="{{ $category->id }}">{{ $category->name }}</option>
-          @endforeach
-        </select>
+      <!-- 'files' => true -> we need this for images -->
+      {!! Form::open(['route' => 'posts.store', 'data-parsley-validate' => '', 'files' => true]) !!}
 
-        {{ Form::label('tags', 'Tags:', ['class' => 'mt-3 font-weight-bold']) }}
-        <select name="tags[]" class="form-control select2-multiple" multiple="multiple">
-          @foreach ($tags as $tag)
-            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-          @endforeach
-        </select>
-
-        {{ Form::label('body', 'Post Body:', array('class' => 'mt-3 font-weight-bold')) }}
-        {{ Form::textarea('body', null, array('id' => 'summernote', 'class' => 'form-control', 'required' => '')) }}
-
-        {{ Form::submit('Create Post', array('class' => 'btn btn-success btn-lg btn-block btn-h1-spacing')) }}
+        <div class="form-group mt-3">
+          {{ Form::label('title', 'Title:', ['class' => 'font-weight-bold']) }}
+          {{ Form::text('title', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '191')) }}
+        </div>
+        <div class="form-group mt-3">
+          {{ Form::label('slug', 'Slug:', ['class' => 'font-weight-bold']) }}
+          {{ Form::text('slug', null, array('class' => 'form-control', 'required' => '', 'minlength' => '5', 'maxlength' => '191')) }}
+        </div>
+        <div class="form-group mt-3">
+          {{ Form::label('category_id', 'Category:', ['class' => 'font-weight-bold']) }}
+          <select name="category_id" class="form-control">
+            @foreach ($categories as $category)
+              <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="form-group mt-3">
+          {{ Form::label('tags', 'Tags:', ['class' => 'font-weight-bold']) }}
+          <select name="tags[]" class="form-control select2-multiple" multiple="multiple">
+            @foreach ($tags as $tag)
+              <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="form-group mt-3">
+          {{ Form::label('featured_image', 'Upload Featured Image:', array('class' => 'mt-3 font-weight-bold')) }}
+          {{ Form::file('featured_image') }}
+        </div>
+        <div class="form-group mt-3">
+          {{ Form::label('body', 'Post Body:', array('class' => 'font-weight-bold')) }}
+          {{ Form::textarea('body', null, array('id' => 'summernote', 'class' => 'form-control', 'required' => '')) }}
+        </div>
+        <div class="form-group mt-3">
+          {{ Form::submit('Create Post', array('class' => 'btn btn-success btn-lg btn-block')) }}
+        </div>
       {!! Form::close() !!}
     </div>
   </div>

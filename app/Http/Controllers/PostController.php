@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Session;
 use App\Category;
 use App\Tag;
 use Purifier;
+use Image;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -62,7 +64,8 @@ class PostController extends Controller
             'title' => 'required|max:191',
             'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
             'category_id' => 'required|integer',
-            'body' => 'required'
+            'body' => 'required',
+            'featured_image' => 'sometimes|image|size:2000'
         ));
 
         // store in the database
@@ -72,6 +75,25 @@ class PostController extends Controller
         $post->category_id = $request->category_id;
         // Purifier::clean() for securing data
         $post->body = Purifier::clean($request->body);
+
+        //save our image
+        if ($request->hasFile('featured_image')) {
+            $image = $request->file('featured_image');
+            $filename = $post->slug . '_' . time(). '.' . $image->getClientOriginalExtension();
+            //file path into the public foolder
+            $location = public_path('images/'.$filename);
+            // save image to exact location
+            //Image::make($image)->resize(800, 400)->save($location);
+            //Image::make($image)->fit(800,400)->save($location);
+            Image::make($image)->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($location);
+
+            // prepare image name for saving it into DB
+            // so we can use it latter
+            $post->image = $filename;
+        }
 
         $post->save();
 
@@ -148,21 +170,13 @@ class PostController extends Controller
         // validate the data
         // check if slug changed, so there is no error,
         // because slug is unique
-        if ($request->input('slug') == $post->slug) {
-            $this->validate($request, array(
-                'title' => 'required|max:191',
-                'category_id' => 'required|integer',
-                'body' => 'required'
-            ));
-        } 
-        else {
-            $this->validate($request, array(
-                'title' => 'required|max:191',
-                'slug' => 'required|alpha_dash|min:5|max:191|unique:posts,slug',
-                'category_id' => 'required|integer',
-                'body' => 'required'
-            ));
-        }
+        $this->validate($request, array(
+            'title' => 'required|max:191',
+            'slug' => "required|alpha_dash|min:5|max:191|unique:posts,slug,$id",
+            'category_id' => 'required|integer',
+            'body' => 'required',
+            'featured_image' => 'image'
+        ));
 
         // save the data to DB
         $post = Post::find($id);
@@ -170,6 +184,29 @@ class PostController extends Controller
         $post->slug = $request->input('slug');
         $post->category_id = $request->input('category_id');
         $post->body = Purifier::clean($request->body);
+
+        if ($request->hasFile('featured_image')) {
+            // add new photo
+            $image = $request->file('featured_image');
+            $filename = $post->slug . '_' . time(). '.' . $image->getClientOriginalExtension();
+            //file path into the public foolder
+            $location = public_path('images/'.$filename);
+            Image::make($image)->resize(800, null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })->save($location);
+
+            $old_file_name = $post->image;
+
+            // update DB
+            $post->image = $filename;
+
+            // delete old photo
+            // use storage facade, 
+            // so the image is also deleted in the filesystem
+            Storage::delete($old_file_name);
+        }
+
         $post->save();
 
         // we do binding with tags after we store data to DB but before Session
@@ -195,6 +232,9 @@ class PostController extends Controller
 
         // detach related tags
         $post->tags()->detach();
+        // delete image in the filesystem
+        Storage::delete($post->image);
+
         $post->delete();
 
         Session::flash('success', 'The post was successfully deleted!');
